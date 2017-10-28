@@ -20,7 +20,7 @@ public class App {
         image.fill(RGBColour.WHITE);
         		        
         //Render some test into the image
-        image.drawText("Hello World", 10, 60, HersheyFont.CURSIVE, 50, RGBColour.BLACK);
+        image.drawText("Welcome to Comp3207", 10, 60, HersheyFont.TIMES_BOLD_ITALIC, 22, RGBColour.BLUE);
 
         //Apply a Gaussian blur
         image.processInplace(new FGaussianConvolve(2f));
