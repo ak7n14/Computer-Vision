@@ -9,6 +9,7 @@ import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.image.colour.ColourSpace;
 import org.openimaj.image.colour.RGBColour;
+import org.openimaj.image.processing.convolution.FFastGaussianConvolve;
 import org.openimaj.image.processing.convolution.FGaussianConvolve;
 import org.openimaj.image.processing.edges.CannyEdgeDetector;
 import org.openimaj.image.processing.edges.*;
@@ -41,7 +42,7 @@ public class App {
     	  new VideoDisplayListener<MBFImage>() {
     	    @SuppressWarnings("deprecation")
 			public void beforeUpdate(MBFImage frame) {
-    	        frame.processInplace(new CannyEdgeDetector2());
+    	        frame.processInplace(new FGaussianConvolve(4,8));
     	    }
 
     	    public void afterUpdate(VideoDisplay<MBFImage> display1) {
