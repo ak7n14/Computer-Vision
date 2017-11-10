@@ -172,4 +172,10 @@ public class HybridImageCreator {
 	public int getSize() {
 		return size;
 	}
+	public MBFImage getImage1() {
+		return image1;
+	}
+	public MBFImage getImage2() {
+		return image2;
+	}
 }
