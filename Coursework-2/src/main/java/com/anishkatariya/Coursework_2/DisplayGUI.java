@@ -13,24 +13,25 @@ import java.io.File;
 import java.io.IOException;
 
 public class DisplayGUI {
-		
+	//Defining the main frame and plane of our GUI
 	JFrame mainFrame;
 	JPanel mainPanel;
 	
 	public DisplayGUI() {
-		init();
+		init();//Initialise GUI
 	}
 	
 	public void init() {
 		
+		//Defining the basics of the main frame and panels
 		mainFrame = new JFrame("COMP3204: Computer Vission");
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainPanel = new JPanel();
 		mainFrame.getContentPane().add(mainPanel);
 		mainFrame.setSize(850,300);
-		
 		mainPanel.setLayout(new GridLayout(1,2));
 		
+		//New panel which contains the textboxes for user to fill in Sigma values
 		JPanel sigmaPanel = new JPanel();
 		sigmaPanel.setLayout(new GridLayout(5,2));
 		JTextField sigma1 = new JTextField("2");
@@ -43,17 +44,21 @@ public class DisplayGUI {
 		sigmaPanel.add(sigma2);
 		mainPanel.add(sigmaPanel);
 		
+		//New panel which has radio buttons that allows user to select the image combination
 		JPanel imagePanel = new JPanel();
 		imagePanel.setLayout(new GridLayout(6,1));
 		imagePanel.add(new JLabel("Please select hybrid image pair"));
 		imagePanel.add(new JLabel(""));
+		
+		//Defining button group containing radio buttons for image pairs
 		ButtonGroup imageButtons = new ButtonGroup();
 		 JRadioButton cycles = new JRadioButton("Bicycle-Motorcycle");
 		 JRadioButton dogCat = new JRadioButton("Dog-Cat");
 		 JRadioButton birdPlane = new JRadioButton("Bird-Plane");
 		 JRadioButton marinstein = new JRadioButton("Marlin-Einstein");
 		 JRadioButton fishmarine = new JRadioButton("Fish -Submarine");
-		 
+		
+		 //Adding them to the main panel
 		 imageButtons.add(cycles);
 		 imageButtons.add(dogCat);
 		 imageButtons.add(birdPlane);
@@ -65,17 +70,19 @@ public class DisplayGUI {
 		 imagePanel.add(birdPlane);
 		 imagePanel.add(marinstein);
 		 imagePanel.add(fishmarine);
-		 
-		 JButton submit = new JButton("Submit");
-		 submit.addActionListener(new SubmitListener(sigma1,sigma2,cycles,dogCat,birdPlane,marinstein,fishmarine));
-		 imagePanel.add(submit);
-		 
-		 mainPanel.add(imagePanel);
 		
+		//Adding a submit button 
+		JButton submit = new JButton("Submit");
+		submit.addActionListener(new SubmitListener(sigma1,sigma2,cycles,dogCat,birdPlane,marinstein,fishmarine));
+		imagePanel.add(submit);
+	
+		//Adding everything to the image panel 
+		mainPanel.add(imagePanel);
 		mainFrame.setVisible(true);
 		
 	}
 	
+	//Class containing an action listener for the submit button
 	class SubmitListener implements ActionListener{
 		 JRadioButton cycles;
 		 JRadioButton dogCat;
@@ -84,6 +91,7 @@ public class DisplayGUI {
 		 JRadioButton fishmarine;
 		 JTextField sigma1,sigma2;
 		 
+		 //Taking in values from the main frame
 		 public SubmitListener(JTextField sigma1,JTextField sigma2,JRadioButton cycles,JRadioButton dogCat,JRadioButton birdPlane,JRadioButton marinstein, JRadioButton fishmarine) {
 	 
 			 this.cycles=cycles;
@@ -96,16 +104,23 @@ public class DisplayGUI {
 					 
 		 }
 		@Override
+		
+		//When submit button is clicked
 		public void actionPerformed(ActionEvent arg0) {
 			int intSigma1 = 0,intSigma2=0;
 			MBFImage image1 = null,image2 = null;
+			//Trying to get sigma values from the textboxes
 			try {
 				intSigma1 =Integer.valueOf(sigma1.getText());
 				intSigma2 = Integer.valueOf(sigma2.getText());
 			}catch(NumberFormatException e) {
+				//Displaying error window when the value entered for sigma are not integers
 				sigmaErrorWindow win = new sigmaErrorWindow("Please enter valid sigma values!");
 			}
 			
+			/*
+			 * Defining image1 and image2 depending on the radio button selected
+			 */
 			if(cycles.isSelected()) {
 				try {
 					image1 = ImageUtilities.readMBF(new File ("data/bicycle.bmp"));
@@ -144,8 +159,8 @@ public class DisplayGUI {
 			
 			}
 			
-			JFrame imageFrame = new JFrame();
-			imageFrame = DisplayUtilities.createNamedWindow("","Resized Images",true);
+			//Creating a HybridImage class and creating scaled hybrid images
+			
 			HybridImageCreator hb = new HybridImageCreator();
 			hb.setSigma1(intSigma1);
 			hb.setSigma2(intSigma2);
@@ -153,6 +168,10 @@ public class DisplayGUI {
 			hb.setImage2(image2);
 			hb.createHybridImage();
 			MBFImage scaled = hb.getReSizedImages();
+			
+			//Defining a frame and displaying scaled images
+			JFrame imageFrame = new JFrame();
+			imageFrame = DisplayUtilities.createNamedWindow("","Resized Images",true);
 			DisplayUtilities.display(scaled, imageFrame);
 		
 		}
