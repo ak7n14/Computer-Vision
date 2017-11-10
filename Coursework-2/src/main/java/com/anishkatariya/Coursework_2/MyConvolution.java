@@ -1,7 +1,7 @@
 package com.anishkatariya.Coursework_2;
 import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.FImage;
-import org.openimaj.image.MBFImage;
+import org.openimaj.image.processing.resize.ResizeProcessor;
 import org.openimaj.image.processor.SinglebandImageProcessor;
 
 public class MyConvolution implements SinglebandImageProcessor<Float, FImage> {
@@ -20,7 +20,7 @@ public class MyConvolution implements SinglebandImageProcessor<Float, FImage> {
 		int templateCols = kernel[0].length;
 		
 		FImage tempImage = image.newInstance(image.width, image.height);
-		//tempImage.fill(0f);
+		tempImage.fill(0f);
 		
 		int templateRowsHalf = (int)Math.floor(templateRows/2);
 		int templateColsHalf = (int)Math.floor(templateCols/2);
@@ -42,6 +42,7 @@ public class MyConvolution implements SinglebandImageProcessor<Float, FImage> {
 		
 		tempImage.normalise();
 		image.internalAssign(tempImage);
+		image.process((new ResizeProcessor(tempImage.getHeight(),tempImage.getWidth())));
 		//displayImage(image);
 		
 	}

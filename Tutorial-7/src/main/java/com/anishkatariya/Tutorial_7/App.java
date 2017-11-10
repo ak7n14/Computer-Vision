@@ -9,6 +9,7 @@ import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.image.colour.ColourSpace;
 import org.openimaj.image.colour.RGBColour;
+import org.openimaj.image.processing.convolution.FConvolution;
 import org.openimaj.image.processing.convolution.FFastGaussianConvolve;
 import org.openimaj.image.processing.convolution.FGaussianConvolve;
 import org.openimaj.image.processing.edges.CannyEdgeDetector;
@@ -27,8 +28,8 @@ import org.openimaj.video.xuggle.XuggleVideo;
 public class App {
     public static void main( String[] args ) throws IOException {
     	Video<MBFImage> video;
-    	video = new XuggleVideo(new File("Data/keyboardcat.flv"));
-   	//video = new VideoCapture(320, 240);
+   // 	video = new XuggleVideo(new File("Data/keyboardcat.flv"));
+    	video = new VideoCapture(320, 240);
 //    	VideoDisplay<MBFImage> display = VideoDisplay.createVideoDisplay(video);
   	
 //    	for (MBFImage mbfImage : video) {
@@ -42,7 +43,7 @@ public class App {
     	  new VideoDisplayListener<MBFImage>() {
     	    @SuppressWarnings("deprecation")
 			public void beforeUpdate(MBFImage frame) {
-    	        frame.processInplace(new FGaussianConvolve(4,8));
+    	        frame.processInplace(new FGaussianConvolve(3,4));
     	    }
 
     	    public void afterUpdate(VideoDisplay<MBFImage> display1) {
