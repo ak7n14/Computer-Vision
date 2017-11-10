@@ -46,7 +46,8 @@ public class MyConvolution implements SinglebandImageProcessor<Float, FImage> {
 		
 		tempImage.normalise();//Normalising the convolved image(pixels in range 0-1)
 		//setting the values of the pixels of the image to that of the temporary image
-		image.internalAssign(tempImage);	
+		image.internalAssign(tempImage);
+		
 	}
 	//Method to display the image after convolution 
 	public void displayImage(FImage image) {

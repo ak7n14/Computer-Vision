@@ -32,7 +32,7 @@ public class HybridImageCreator {
 	 
 	
 	
-	public void createHybridImage() {
+	public MBFImage[] createHybridImage() {
 		
 		//getting size as a function of sigma value
 		size = (int) (8.0f * cutOff1 + 0.1f);//window is +/- 4 sigmas from the centre of the Gaussian
@@ -58,9 +58,8 @@ public class HybridImageCreator {
 		hybridImage1= highPass1.add(lowPass2);
 		hybridImage2 = highPass2.add(lowPass1);
 		
-		//Displaying the 2 hybrid images
-		displayHybrid(hybridImage1,hybridImage2);
-		
+		MBFImage [] hybrids = {hybridImage1,hybridImage2};
+		return hybrids;
 	}
 	
 	//Method for returning and image with all scaled images
@@ -102,10 +101,25 @@ public class HybridImageCreator {
 		return reSizedImgs;
 	}
 	
+	public MBFImage getHighLowImage() {
+		MBFImage highLow = new MBFImage(image1.getWidth()*2,image1.getHeight()*2);
+		//getting highPass images
+		//adding 0.2f for visualising as high pass is too dark otherwise
+		MBFImage high1 = highPass1.clone().add(0.2f);
+		MBFImage high2 = highPass2.clone().add(0.2f);
+		//drawing high and low pass images to the main image
+		highLow.drawImage(high1, 0, 0);
+		highLow.drawImage(high2, image1.getWidth(), 0);
+		highLow.drawImage(lowPass1, 0, image1.getHeight());
+		highLow.drawImage(lowPass2, image1.getWidth(), image1.getHeight());
+		//returning image containing the high and low pass instances of the image
+		return highLow;		
+	}
+	
 	//Displaying the 2 hybrid images created
-	public void displayHybrid(MBFImage image,MBFImage image2) {
-		DisplayUtilities.display(image);
-		DisplayUtilities.display(image2);
+	public void displayHybrid(MBFImage[]image) {
+		DisplayUtilities.display(image[0]);
+		DisplayUtilities.display(image[1]);
 	}
 	
 	//setting value of sigma1
