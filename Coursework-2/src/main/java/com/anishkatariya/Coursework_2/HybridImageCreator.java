@@ -121,7 +121,7 @@ public class HybridImageCreator {
 		DisplayUtilities.display(image[0]);
 		DisplayUtilities.display(image[1]);
 	}
-	
+
 	//setting value of sigma1
 	public void setSigma1(int cutOff1) {
 		this.cutOff1 = cutOff1;
@@ -140,5 +140,36 @@ public class HybridImageCreator {
 	//setting image2
 	public void setImage2(MBFImage image2) {
 		this.image2 = image2;
+	}
+	/*
+	 * Getter functions
+	 */
+	public int getCutOff1() {
+		return cutOff1;
+	}
+	
+	public int getCutOff2() {
+		return cutOff2;
+	}
+	public MBFImage getHighPass1() {
+		return highPass1;
+	}
+	public MBFImage getHighPass2() {
+		return highPass2;
+	}
+	public MBFImage getHybridImage1() {
+		return hybridImage1;
+	}
+	public MBFImage getHybridImage2() {
+		return hybridImage2;
+	}
+	public MBFImage getLowPass1() {
+		return lowPass1;
+	}
+	public MBFImage getLowPass2() {
+		return lowPass2;
+	}
+	public int getSize() {
+		return size;
 	}
 }
