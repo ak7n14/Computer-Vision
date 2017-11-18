@@ -11,6 +11,9 @@ import org.openimaj.image.colour.RGBColour;
 import org.openimaj.image.connectedcomponent.GreyscaleConnectedComponentLabeler;
 import org.openimaj.image.pixel.ConnectedComponent;
 import org.openimaj.image.processing.convolution.FGaussianConvolve;
+import org.openimaj.image.processor.PixelProcessor;
+import org.openimaj.image.segmentation.FelzenszwalbHuttenlocherSegmenter;
+import org.openimaj.image.segmentation.SegmentationUtilities;
 import org.openimaj.image.typography.hershey.HersheyFont;
 import org.openimaj.ml.clustering.FloatCentroidsResult;
 import org.openimaj.ml.clustering.assignment.HardAssigner;
@@ -28,16 +31,17 @@ public class App {
     		MBFImage input = ImageUtilities.readMBF(new File("data/cat.bmp"));
     
     		input = ColourSpace.convert(input, ColourSpace.CIE_Lab);
-    		FloatKMeans cluster = FloatKMeans.createExact(2);
+    		FloatKMeans cluster = FloatKMeans.createExact(20,50);
    
     		float[][] imageData = input.getPixelVectorNative(new float[input.getWidth()*input.getHeight()][3]);
     		FloatCentroidsResult result = cluster.cluster(imageData);
    
-    		float[][] centroids = result.centroids;
+    		final float[][] centroids = result.centroids;
     		for (float[] fs:centroids) {
     			System.out.println(Arrays.toString(fs));
     		}
-    		HardAssigner<float[],?,?> assigner = result.defaultHardAssigner();
+    		final HardAssigner<float[],?,?> assigner = result.defaultHardAssigner();
+ /*
     		for (int y=0; y<input.getHeight(); y++) {
     			for (int x=0; x<input.getWidth(); x++) {
     				float[] pixel = input.getPixelNative(x, y);
@@ -46,17 +50,52 @@ public class App {
     			}
     		}
     		input = ColourSpace.convert(input, ColourSpace.RGB);
-    		DisplayUtilities.display(input);
+//    		DisplayUtilities.display(input);
     		GreyscaleConnectedComponentLabeler labeler = new GreyscaleConnectedComponentLabeler();
     		List<ConnectedComponent> components = labeler.findComponents(input.flatten());
     		int i = 0;
+    		
     		for (ConnectedComponent comp : components) {
     		    if (comp.calculateArea() < 50) 
     		        continue;
     		    input.drawText("Point:" + (i++), comp.calculateCentroidPixel(), HersheyFont.TIMES_MEDIUM, 20);
     		}
-    		DisplayUtilities.display(input);
+    		*/
+    		
+    		
+    		input.processInplace(new PixelProcessor<Float[]>(){
+    			public Float[] processPixel(Float[] pixel) 
+    			{
+    				float[] temp = new float[pixel.length];
+    				for(int i=0; i<pixel.length; i++){
+    					temp[i] = pixel[i];
+    				}
+    				
+    				int centroid = assigner.assign(temp);
+    				float[] result = centroids[centroid];
+    				
+    				Float[] temp2 = new Float[result.length];
+    				for(int i=0; i<result.length; i++){
+    					temp2[i] = result[i];
+    				}
+    				
+    				return temp2;
+    			}
+        	});
+    		
+    		FelzenszwalbHuttenlocherSegmenter<MBFImage> segemntor = new FelzenszwalbHuttenlocherSegmenter<MBFImage>();
+        	List<ConnectedComponent> comps = segemntor.segment(input);
 
+        	MBFImage segmented = SegmentationUtilities.renderSegments(input.getWidth(), input.getHeight(), comps);
+        	DisplayUtilities.display(segmented);
+        	int i=0;
+        	for(ConnectedComponent con : comps){
+        		if(con.calculateArea() < 500)
+        			continue;
+        		segmented.drawText("Region " + i++, con.calculateCentroidPixel(), HersheyFont.TIMES_MEDIUM, 20);
+        	}  		
+        	DisplayUtilities.display(segmented);
+        	
     }
     	
 }
