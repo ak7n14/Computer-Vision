@@ -23,7 +23,9 @@ import java.util.List;
 import cern.colt.Arrays;
 
 /**
- * OpenIMAJ Hello world!
+ * Using Pixel processor took the same amount of time however i believe explicit conversion from 
+ * Float to float may take more memory can cause the algorithm to slow down a bit however can not be too significant 
+ * Since both implementations used 2 for loops
  *
  */
 public class App {
@@ -41,6 +43,8 @@ public class App {
     			System.out.println(Arrays.toString(fs));
     		}
     		final HardAssigner<float[],?,?> assigner = result.defaultHardAssigner();
+    		
+    		//============Tutorial Methods===============
  /*
     		for (int y=0; y<input.getHeight(); y++) {
     			for (int x=0; x<input.getWidth(); x++) {
@@ -62,6 +66,8 @@ public class App {
     		}
     		*/
     		
+ //==================Alternative method(My implementation)===============
+    		
     		
     		input.processInplace(new PixelProcessor<Float[]>(){
     			public Float[] processPixel(Float[] pixel) 
@@ -82,7 +88,7 @@ public class App {
     				return temp2;
     			}
         	});
-    		
+    		//Alternation segmentation algorithm
     		FelzenszwalbHuttenlocherSegmenter<MBFImage> segemntor = new FelzenszwalbHuttenlocherSegmenter<MBFImage>();
         	List<ConnectedComponent> comps = segemntor.segment(input);
 

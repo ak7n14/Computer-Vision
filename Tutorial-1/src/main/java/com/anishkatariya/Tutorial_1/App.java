@@ -7,10 +7,6 @@ import org.openimaj.image.colour.RGBColour;
 import org.openimaj.image.processing.convolution.FGaussianConvolve;
 import org.openimaj.image.typography.hershey.HersheyFont;
 
-/**
- * OpenIMAJ Hello world!
- *
- */
 public class App {
     public static void main( String[] args ) {
     	//Create an image

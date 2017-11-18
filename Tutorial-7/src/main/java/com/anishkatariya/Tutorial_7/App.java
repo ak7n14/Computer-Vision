@@ -22,13 +22,13 @@ import org.openimaj.video.xuggle.XuggleVideo;
 
 
 /**
- * OpenIMAJ Hello world!
+ * Applied FGussianConvolution operation
  *
  */
 public class App {
     public static void main( String[] args ) throws IOException {
     	Video<MBFImage> video;
-   // 	video = new XuggleVideo(new File("Data/keyboardcat.flv"));
+ // 	video = new XuggleVideo(new File("Data/keyboardcat.flv"));
     	video = new VideoCapture(320, 240);
 //    	VideoDisplay<MBFImage> display = VideoDisplay.createVideoDisplay(video);
   	
@@ -43,7 +43,7 @@ public class App {
     	  new VideoDisplayListener<MBFImage>() {
     	    @SuppressWarnings("deprecation")
 			public void beforeUpdate(MBFImage frame) {
-    	        frame.processInplace(new FGaussianConvolve(3,4));
+    	        frame.processInplace(new FGaussianConvolve(4,8));//calling FGussianConvolevr using random sigma values
     	    }
 
     	    public void afterUpdate(VideoDisplay<MBFImage> display1) {

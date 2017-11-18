@@ -14,10 +14,7 @@ import org.openimaj.image.processing.edges.CannyEdgeDetector;
 import org.openimaj.image.typography.hershey.HersheyFont;
 import org.openimaj.math.geometry.shape.Ellipse;
 
-/**
- * OpenIMAJ Hello world!
- *
- */
+
 public class App {
     public static void main( String[] args ) {
     	//Create an image
