@@ -83,13 +83,13 @@ public class App {
     	        for (final String person : features.keySet()) {
     	            for (final DoubleFV fv : features.get(person)) {
     	                double distance = fv.compare(testFeature, DoubleFVComparison.EUCLIDEAN);
-    	                if(minDistance>threshold) {
-    	                		bestPerson="Cannot be determined";
-    	                }else {
+//    	                if(minDistance>threshold) {
+//    	                		bestPerson="Cannot be determined";
+//    	                }else {
     	                		if (distance < minDistance) {
     	                			minDistance = distance;
     	                			bestPerson = person;
-    	                		}
+//    	                		}
     	                }
     	                
     	            }
